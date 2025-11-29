@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>API Documentation</title>
+  <meta name="description" content="Access interactive API documentation including Swagger UI and ReDoc. Explore endpoints, schemas, and test API functionality." />
+  <meta name="keywords" content="API, documentation, Swagger, ReDoc, REST API, endpoints" />
+
+  <!-- Open Graph / Facebook -->
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="API Documentation" />
+  <meta property="og:description" content="Access interactive API documentation including Swagger UI and ReDoc. Explore endpoints, schemas, and test API functionality." />
+
+  <!-- Twitter -->
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="API Documentation" />
+  <meta name="twitter:description" content="Access interactive API documentation including Swagger UI and ReDoc. Explore endpoints, schemas, and test API functionality." />
+
+  <!-- Structured Data -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebPage",
+    "name": "API Documentation",
+    "description": "Access interactive API documentation including Swagger UI and ReDoc. Explore endpoints, schemas, and test API functionality.",
+    "url": "/api",
+    "mainEntity": {
+      "@type": "ItemList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Swagger UI Documentation",
+          "url": "/api/docs"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "ReDoc Documentation",
+          "url": "/api/redoc"
+        }
+      ]
+    }
+  }
+  </script>
+
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f4f4f4;
+      color: #333;
+      text-align: center;
+      padding-top: 80px;
+    }
+    .card {
+      max-width: 600px;
+      margin: auto;
+      background: white;
+      padding: 40px;
+      border-radius: 12px;
+      box-shadow: 0 4px 25px rgba(0, 0, 0, 0.1);
+    }
+    h1 {
+      color: #1976d2;
+      margin-bottom: 30px;
+    }
+    .links {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      margin-top: 30px;
+    }
+    a {
+      display: inline-block;
+      padding: 15px 30px;
+      background: #1976d2;
+      color: white;
+      text-decoration: none;
+      border-radius: 6px;
+      font-weight: bold;
+      transition: background 0.3s;
+    }
+    a:hover {
+      background: #1565c0;
+    }
+    a.secondary {
+      background: #424242;
+    }
+    a.secondary:hover {
+      background: #212121;
+    }
+    p {
+      margin: 20px 0;
+      line-height: 1.6;
+    }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <h1>API Documentation</h1>
+    <p>Welcome to the API. Access the interactive documentation using the links below:</p>
+    <div class="links">
+      <a href="/api/docs">Swagger UI Documentation</a>
+      <a href="/api/redoc" class="secondary">ReDoc Documentation</a>
+    </div>
+  </div>
+</body>
+</html>

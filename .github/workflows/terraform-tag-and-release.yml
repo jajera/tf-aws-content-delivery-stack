@@ -1,0 +1,12 @@
+name: Terraform Tag and Release
+on:
+  workflow_run:
+    workflows: ["Generate terraform docs"]
+    types:
+      - completed
+
+permissions:
+  contents: write
+jobs:
+  terraform-tag-and-release:
+    uses: actionsforge/actions/.github/workflows/terraform-tag-and-release.yml@main

@@ -1,0 +1,5 @@
+User-agent: *
+Allow: /
+Disallow: /api/health
+
+Sitemap: /sitemap.xml
