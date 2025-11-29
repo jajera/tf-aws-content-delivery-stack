@@ -1,7 +1,7 @@
 # AWS Content Delivery Stack
 
-![GitHub Actions](https://github.com/jajera/tf-aws-content-delivery-stack/actions/workflows/terraform-lint-validate.yml/badge.svg)
-![GitHub Actions](https://github.com/jajera/tf-aws-content-delivery-stack/actions/workflows/terraform-tag-and-release.yml/badge.svg)
+![GitHub Actions](https://github.com/jajera/terraform-aws-content-delivery-stack/actions/workflows/terraform-lint-validate.yml/badge.svg)
+![GitHub Actions](https://github.com/jajera/terraform-aws-content-delivery-stack/actions/workflows/terraform-tag-and-release.yml/badge.svg)
 
 Terraform project demonstrating an AWS Networking & Content Delivery stack with CloudFront, WAF, S3, ALB, and ECS Fargate for secure, edge-optimized web and API delivery.
 
@@ -93,7 +93,7 @@ Internet
 
    ```bash
    git clone <repository-url>
-   cd tf-aws-content-delivery-stack
+   cd terraform-aws-content-delivery-stack
    ```
 
 2. **Copy example variables**
@@ -223,7 +223,7 @@ route53_zone_name    = "example.com"
 
 ECS configuration is handled through the ECS module. See `modules/ecs/README.md` for details.
 
-## Inputs
+## Module Inputs
 
 <!-- BEGIN_TF_DOCS -->
 ## Requirements
@@ -327,7 +327,7 @@ ECS configuration is handled through the ECS module. See `modules/ecs/README.md`
 | <a name="output_web_target_group_arn"></a> [web\_target\_group\_arn](#output\_web\_target\_group\_arn) | Target group ARN for the Web service |
 <!-- END_TF_DOCS -->
 
-## Outputs
+## Key Outputs
 
 After deployment, key outputs include:
 
