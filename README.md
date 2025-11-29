@@ -226,7 +226,105 @@ ECS configuration is handled through the ECS module. See `modules/ecs/README.md`
 ## Inputs
 
 <!-- BEGIN_TF_DOCS -->
+## Requirements
 
+| Name | Version |
+|------|---------|
+| <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 1.5.0 |
+| <a name="requirement_aws"></a> [aws](#requirement\_aws) | >= 6.0 |
+
+## Providers
+
+| Name | Version |
+|------|---------|
+| <a name="provider_random"></a> [random](#provider\_random) | 3.7.2 |
+
+## Modules
+
+| Name | Source | Version |
+|------|--------|---------|
+| <a name="module_alb_api"></a> [alb\_api](#module\_alb\_api) | ./modules/alb | n/a |
+| <a name="module_alb_logs_s3"></a> [alb\_logs\_s3](#module\_alb\_logs\_s3) | ./modules/alb/s3-logs | n/a |
+| <a name="module_alb_web"></a> [alb\_web](#module\_alb\_web) | ./modules/alb | n/a |
+| <a name="module_cloudfront"></a> [cloudfront](#module\_cloudfront) | ./modules/cloudfront | n/a |
+| <a name="module_ecs"></a> [ecs](#module\_ecs) | ./modules/ecs | n/a |
+| <a name="module_vpc"></a> [vpc](#module\_vpc) | ./modules/vpc | n/a |
+
+## Resources
+
+| Name | Type |
+|------|------|
+| [random_id.suffix](https://registry.terraform.io/providers/hashicorp/random/latest/docs/resources/id) | resource |
+
+## Inputs
+
+| Name | Description | Type | Default | Required |
+|------|-------------|------|---------|:--------:|
+| <a name="input_alb_certificate_arn"></a> [alb\_certificate\_arn](#input\_alb\_certificate\_arn) | ARN of ACM certificate for ALB HTTPS listener (optional) | `string` | `null` | no |
+| <a name="input_alb_origin_protocol_policy"></a> [alb\_origin\_protocol\_policy](#input\_alb\_origin\_protocol\_policy) | Protocol policy for ALB origin | `string` | `"https-only"` | no |
+| <a name="input_availability_zones"></a> [availability\_zones](#input\_availability\_zones) | List of availability zones | `list(string)` | <pre>[<br/>  "ap-southeast-2a",<br/>  "ap-southeast-2b"<br/>]</pre> | no |
+| <a name="input_aws_region"></a> [aws\_region](#input\_aws\_region) | AWS region to deploy resources | `string` | `"ap-southeast-2"` | no |
+| <a name="input_custom_domain_name"></a> [custom\_domain\_name](#input\_custom\_domain\_name) | Custom domain name for CloudFront (e.g., web.example.com). Required if enable\_custom\_domain is true | `string` | `null` | no |
+| <a name="input_default_root_object"></a> [default\_root\_object](#input\_default\_root\_object) | Default root object for CloudFront | `string` | `"index.html"` | no |
+| <a name="input_enable_alb"></a> [enable\_alb](#input\_enable\_alb) | If true, creates Application Load Balancer (ALB) for routing traffic to ECS services | `bool` | `false` | no |
+| <a name="input_enable_cloudfront"></a> [enable\_cloudfront](#input\_enable\_cloudfront) | If true, creates CloudFront distribution and web container will use CloudFront URL for API calls (enables caching). If false, CloudFront is not created and uses ALB directly. Requires ALB to be enabled | `bool` | `false` | no |
+| <a name="input_enable_cloudfront_access_logs"></a> [enable\_cloudfront\_access\_logs](#input\_enable\_cloudfront\_access\_logs) | Enable CloudFront access logs to S3 | `bool` | `false` | no |
+| <a name="input_enable_container_insights"></a> [enable\_container\_insights](#input\_enable\_container\_insights) | Enable CloudWatch Container Insights | `bool` | `false` | no |
+| <a name="input_enable_custom_domain"></a> [enable\_custom\_domain](#input\_enable\_custom\_domain) | If true, enables custom domain for CloudFront with ACM certificate and Route53 DNS records | `bool` | `false` | no |
+| <a name="input_enable_deletion_protection"></a> [enable\_deletion\_protection](#input\_enable\_deletion\_protection) | Enable deletion protection for ALB | `bool` | `false` | no |
+| <a name="input_enable_ecs"></a> [enable\_ecs](#input\_enable\_ecs) | If true, creates ECS cluster and services. Requires ALB to be enabled | `bool` | `false` | no |
+| <a name="input_enable_https"></a> [enable\_https](#input\_enable\_https) | If true and certificate is provided, redirect HTTP to HTTPS. If false or no certificate, HTTP listener will forward to target group. | `bool` | `false` | no |
+| <a name="input_enable_s3_versioning"></a> [enable\_s3\_versioning](#input\_enable\_s3\_versioning) | Enable S3 bucket versioning | `bool` | `false` | no |
+| <a name="input_enable_waf"></a> [enable\_waf](#input\_enable\_waf) | Enable WAF Web ACL for CloudFront distribution | `bool` | `false` | no |
+| <a name="input_enable_waf_logging"></a> [enable\_waf\_logging](#input\_enable\_waf\_logging) | Enable WAF logging to Kinesis Firehose. Requires enable\_waf to be true | `bool` | `false` | no |
+| <a name="input_flow_log_retention_days"></a> [flow\_log\_retention\_days](#input\_flow\_log\_retention\_days) | Number of days to retain VPC Flow Logs | `number` | `7` | no |
+| <a name="input_force_destroy"></a> [force\_destroy](#input\_force\_destroy) | If true, Terraform will not prevent destruction of resources | `bool` | `false` | no |
+| <a name="input_geo_restriction_locations"></a> [geo\_restriction\_locations](#input\_geo\_restriction\_locations) | List of country codes for geo restriction | `list(string)` | `[]` | no |
+| <a name="input_geo_restriction_type"></a> [geo\_restriction\_type](#input\_geo\_restriction\_type) | Geo restriction type | `string` | `"none"` | no |
+| <a name="input_log_retention_days"></a> [log\_retention\_days](#input\_log\_retention\_days) | Number of days to retain CloudWatch logs | `number` | `7` | no |
+| <a name="input_name_prefix"></a> [name\_prefix](#input\_name\_prefix) | Prefix for all resource names | `string` | n/a | yes |
+| <a name="input_nat_gateway_per_az"></a> [nat\_gateway\_per\_az](#input\_nat\_gateway\_per\_az) | If true, create one NAT Gateway per availability zone (high availability). If false, create a single NAT Gateway (cost savings) | `bool` | `false` | no |
+| <a name="input_price_class"></a> [price\_class](#input\_price\_class) | CloudFront price class | `string` | `"PriceClass_All"` | no |
+| <a name="input_route53_zone_name"></a> [route53\_zone\_name](#input\_route53\_zone\_name) | Route53 hosted zone name (e.g., example.com). Required if enable\_custom\_domain is true | `string` | `null` | no |
+| <a name="input_subnet_bits"></a> [subnet\_bits](#input\_subnet\_bits) | Number of bits to add to VPC CIDR for subnet calculation | `number` | `8` | no |
+| <a name="input_tags"></a> [tags](#input\_tags) | Tags to apply to all resources | `map(string)` | <pre>{<br/>  "ManagedBy": "Terraform"<br/>}</pre> | no |
+| <a name="input_vpc_cidr"></a> [vpc\_cidr](#input\_vpc\_cidr) | CIDR block for VPC | `string` | `"10.0.0.0/16"` | no |
+| <a name="input_waf_allowed_methods"></a> [waf\_allowed\_methods](#input\_waf\_allowed\_methods) | List of allowed HTTP methods for WAF. Requests with other methods will be blocked | `list(string)` | <pre>[<br/>  "GET",<br/>  "HEAD",<br/>  "OPTIONS",<br/>  "POST",<br/>  "PUT",<br/>  "PATCH",<br/>  "DELETE"<br/>]</pre> | no |
+| <a name="input_waf_rate_limit"></a> [waf\_rate\_limit](#input\_waf\_rate\_limit) | WAF rate limit per 5-minute period per IP address. Set to 0 to disable rate limiting | `number` | `2000` | no |
+
+## Outputs
+
+| Name | Description |
+|------|-------------|
+| <a name="output_api_alb_arn"></a> [api\_alb\_arn](#output\_api\_alb\_arn) | ARN of the API ALB |
+| <a name="output_api_alb_dns_name"></a> [api\_alb\_dns\_name](#output\_api\_alb\_dns\_name) | DNS name of the API ALB |
+| <a name="output_api_alb_url"></a> [api\_alb\_url](#output\_api\_alb\_url) | HTTP URL that hits the API ALB directly |
+| <a name="output_api_listener_arns"></a> [api\_listener\_arns](#output\_api\_listener\_arns) | ARNs of API ALB listeners |
+| <a name="output_api_service_name"></a> [api\_service\_name](#output\_api\_service\_name) | Name of the API ECS service |
+| <a name="output_api_target_group_arn"></a> [api\_target\_group\_arn](#output\_api\_target\_group\_arn) | Target group ARN for the API service |
+| <a name="output_cloudfront_api_url"></a> [cloudfront\_api\_url](#output\_cloudfront\_api\_url) | HTTPS URL for API endpoints served via CloudFront |
+| <a name="output_cloudfront_distribution_arn"></a> [cloudfront\_distribution\_arn](#output\_cloudfront\_distribution\_arn) | ARN of the CloudFront distribution |
+| <a name="output_cloudfront_distribution_id"></a> [cloudfront\_distribution\_id](#output\_cloudfront\_distribution\_id) | ID of the CloudFront distribution |
+| <a name="output_cloudfront_domain_name"></a> [cloudfront\_domain\_name](#output\_cloudfront\_domain\_name) | Domain name assigned by CloudFront |
+| <a name="output_cloudfront_url"></a> [cloudfront\_url](#output\_cloudfront\_url) | HTTPS URL served via CloudFront |
+| <a name="output_custom_domain_api_url"></a> [custom\_domain\_api\_url](#output\_custom\_domain\_api\_url) | HTTPS URL for API endpoints via custom domain (if enabled) |
+| <a name="output_custom_domain_url"></a> [custom\_domain\_url](#output\_custom\_domain\_url) | HTTPS URL for the custom domain (if enabled) |
+| <a name="output_ecs_cluster_id"></a> [ecs\_cluster\_id](#output\_ecs\_cluster\_id) | ID of the ECS cluster |
+| <a name="output_ecs_cluster_name"></a> [ecs\_cluster\_name](#output\_ecs\_cluster\_name) | Name of the ECS cluster |
+| <a name="output_private_subnet_ids"></a> [private\_subnet\_ids](#output\_private\_subnet\_ids) | IDs of the private subnets used by ECS |
+| <a name="output_public_subnet_ids"></a> [public\_subnet\_ids](#output\_public\_subnet\_ids) | IDs of the public subnets (for ALBs/NAT) |
+| <a name="output_vpc_cidr"></a> [vpc\_cidr](#output\_vpc\_cidr) | CIDR block assigned to the VPC |
+| <a name="output_vpc_id"></a> [vpc\_id](#output\_vpc\_id) | ID of the provisioned VPC |
+| <a name="output_waf_web_acl_arn"></a> [waf\_web\_acl\_arn](#output\_waf\_web\_acl\_arn) | ARN of the WAF Web ACL protecting CloudFront |
+| <a name="output_waf_web_acl_id"></a> [waf\_web\_acl\_id](#output\_waf\_web\_acl\_id) | ID of the WAF Web ACL protecting CloudFront |
+| <a name="output_web_alb_arn"></a> [web\_alb\_arn](#output\_web\_alb\_arn) | ARN of the Web ALB |
+| <a name="output_web_alb_dns_name"></a> [web\_alb\_dns\_name](#output\_web\_alb\_dns\_name) | DNS name of the Web ALB |
+| <a name="output_web_alb_url"></a> [web\_alb\_url](#output\_web\_alb\_url) | HTTP URL that hits the Web ALB directly |
+| <a name="output_web_assets_bucket_domain_name"></a> [web\_assets\_bucket\_domain\_name](#output\_web\_assets\_bucket\_domain\_name) | Regional domain name for the static asset bucket |
+| <a name="output_web_assets_bucket_name"></a> [web\_assets\_bucket\_name](#output\_web\_assets\_bucket\_name) | Name of the S3 bucket that stores static web assets |
+| <a name="output_web_listener_arns"></a> [web\_listener\_arns](#output\_web\_listener\_arns) | ARNs of Web ALB listeners |
+| <a name="output_web_service_name"></a> [web\_service\_name](#output\_web\_service\_name) | Name of the Web ECS service |
+| <a name="output_web_target_group_arn"></a> [web\_target\_group\_arn](#output\_web\_target\_group\_arn) | Target group ARN for the Web service |
 <!-- END_TF_DOCS -->
 
 ## Outputs
